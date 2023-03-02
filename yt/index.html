@@ -40,7 +40,7 @@
         }
         
         if (yt_id != ""){
-            window.location = window.location.split("?")[0] + "?ytid=" + yt_id;
+            window.location = window.location.origin + window.location.pathname + "?ytid=" + yt_id;
         }
         else{
             video_area.innerHTML = "Not a valid Youtube URL(e.g. https://youtu.be/dQw4w9WgXcQ or https://www.youtube.com/watch?v=dQw4w9WgXcQ), please try again!"
