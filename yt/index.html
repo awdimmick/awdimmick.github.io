@@ -14,11 +14,10 @@
     function load_video(){
         url = document.getElementById("url").value;
         video_area = document.getElementById("video_area");
-        video_width = document.getElementById("container").clientWidth; //window.innerWidth * 0.9;
+        video_width = document.getElementById("container").clientWidth; 
         video_height = video_width * 0.75; // 4:3 ratio
         
-    //https://www.youtube.com/watch?v=gQtgtKtvRdo&t=287s
-
+        // Extract Youtube video ID from URL depending upon its format
         if (url.includes("watch?v=")){
             yt_id = url.split("watch?v=")[1].split("&")[0];
         }
