@@ -1,82 +1,129 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<title>YouTube - no ads!</title>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>YouTube - no ads!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<script>
-
-    function load_page(){
-        
-        video_area = document.getElementById("video_area");
-        video_width = document.getElementById("container").clientWidth; 
-        video_height = video_width * 0.75; // 4:3 ratio
-
-        url_params = new URLSearchParams(window.location.search);
-        yt_id = url_params.get('ytid');
-        if (yt_id != null){
-            video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+    <style>
+        body.dark_mode {
+            background-color: rgba(18, 18, 18, 0.94);
+            color: white;
         }
-        
-    }
 
-    function get_yt_id(){
-        url = document.getElementById("url").value;
+        h1.dark_mode {
+            color: #ffd500;
+        }
+    </style>
 
-        yt_id = "";
-        
-        // Extract Youtube video ID from URL depending upon its format
-        if (url.includes("watch?v=")){
-            yt_id = url.split("watch?v=")[1].split("&")[0];
-        }
-        else {
-            yt_id = url.split("/").slice(-1);
-        }
-        
-        if (yt_id != ""){
-            window.location = window.location.origin + window.location.pathname + "?ytid=" + yt_id;
-        }
-        else{
-            video_area.innerHTML = "Not a valid Youtube URL(e.g. https://youtu.be/dQw4w9WgXcQ or https://www.youtube.com/watch?v=dQw4w9WgXcQ), please try again!"
-        }
-    }
+    <script>
 
-</script>
+        dark_mode = false;
+
+        function load_page() {
+
+            video_area = document.getElementById("video_area");
+            video_width = document.getElementById("container").clientWidth;
+            video_height = video_width * 0.75; // 4:3 ratio
+
+            url_params = new URLSearchParams(window.location.search);
+            yt_id = url_params.get('ytid');
+            if (yt_id != null) {
+                video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+            }
+            if (url_params.get('dark') == 'true') {
+                toggle_dark_mode();
+            }
+
+        }
+
+        function get_yt_id() {
+            url = document.getElementById("url").value;
+
+            yt_id = "";
+
+            // Extract Youtube video ID from URL depending upon its format
+            if (url.includes("watch?v=")) {
+                yt_id = url.split("watch?v=")[1].split("&")[0];
+            }
+            else {
+                yt_id = url.split("/").slice(-1);
+            }
+
+            if (yt_id != "") {
+                new_url = window.location.origin + window.location.pathname + "?ytid=" + yt_id;
+
+                if (dark_mode) {
+                    new_url += "&dark=true";
+                }
+
+                window.location = new_url;
+            }
+            else {
+                video_area.innerHTML = "Not a valid Youtube URL(e.g. https://youtu.be/dQw4w9WgXcQ or https://www.youtube.com/watch?v=dQw4w9WgXcQ), please try again!"
+            }
+        }
+        function toggle_dark_mode() {
+
+            dark_mode = !dark_mode;
+
+            if (dark_mode) {
+
+                document.getElementsByTagName("h1")[0].classList.add("dark_mode");
+                document.getElementsByTagName("body")[0].classList.add("dark_mode");
+                document.getElementById("dark_mode_label").innerText = "Turn off dark mode";
+            }
+            else {
+                document.getElementsByTagName("h1")[0].classList.remove("dark_mode");
+                document.getElementsByTagName("body")[0].classList.remove("dark_mode");
+                document.getElementById("dark_mode_label").innerText = "Turn on dark mode";
+            }
+        }
+
+    </script>
 
 </head>
+
 <body onload="load_page()">
     <div class="container" id="container" style="margin-top:10px;">
-    <h1>Mr. Dimmick's YouTube-with-no-ads tool!</h1>
-    
-    <label for="url">Enter Youtube URL:</label>
-    <input type="text" name="url" id="url" size="50">&nbsp;
-    <button id="go_button" onclick="get_yt_id();">Go!</button>
-    <br><br>
-    <div id="video_area">
-        <span>Enter the URL for a YouTube video above!</span>
+
+        <p id="dark_mode_label" onclick="toggle_dark_mode();" style="cursor: pointer;">Turn on dark mode</p>
+
+        <h1>Mr. Dimmick's YouTube-with-no-ads tool!</h1>
+
+        <label for=" url">Enter Youtube URL:</label>&nbsp;
+        <input type="text" name="url" id="url" size="50">&nbsp;
+        <button id="go_button" onclick="get_yt_id();">Go!</button>
+        <br><br>
+        <div id="video_area">
+            <span>Enter the URL for a YouTube video above!</span>
+        </div>
     </div>
-</div>
 </body>
+
 <script>
     // From: https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp 
     // Get the input field
     var input = document.getElementById("url");
 
     // Execute a function when the user presses a key on the keyboard
-    input.addEventListener("keypress", function(event) {
-    // If the user presses the "Enter" key on the keyboard
-    if (event.key === "Enter") {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("go_button").click();
-    }
+    input.addEventListener("keypress", function (event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("go_button").click();
+        }
     });
+
 </script>
+
 </html>
