@@ -17,6 +17,7 @@
         video_area = document.getElementById("video_area");
         video_width = document.getElementById("container").clientWidth; 
         video_height = video_width * 0.75; // 4:3 ratio
+        yt_id = "";
         
         // Extract Youtube video ID from URL depending upon its format
         if (url.includes("watch?v=")){
@@ -26,7 +27,12 @@
             yt_id = url.split("/").slice(-1);
         }
         
-        video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+        if (yt_id != ""){
+            video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+        }
+        else{
+            video_area.innerHTML = "Not a valid Youtube URL(e.g. https://youtu.be/dQw4w9WgXcQ or https://www.youtube.com/watch?v=dQw4w9WgXcQ), please try again!"
+        }
     }
 
 </script>
