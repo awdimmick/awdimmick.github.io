@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>YouTube - no ads!</title>
+    <title>SchoolTube - Clutter-free YouTube for schools</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,9 +38,12 @@
             if (yt_id != null) {
                 video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
             }
-            if (url_params.get('dark') == 'true') {
-                toggle_dark_mode();
-            }
+            
+            toggle_dark_mode();
+            
+            //if (url_params.get('dark') == 'true') {
+            //    toggle_dark_mode();
+            //}
 
         }
 
@@ -60,9 +63,9 @@
             if (yt_id != "") {
                 new_url = window.location.origin + window.location.pathname + "?ytid=" + yt_id;
 
-                if (dark_mode) {
-                    new_url += "&dark=true";
-                }
+                //if (dark_mode) {
+                //   new_url += "&dark=true";
+                //}
 
                 window.location = new_url;
             }
