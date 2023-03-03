@@ -36,7 +36,7 @@
             url_params = new URLSearchParams(window.location.search);
             yt_id = url_params.get('ytid');
             if (yt_id != null) {
-                video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                video_area.innerHTML = `<iframe width="${video_width}" height="${video_height}" src="https://www.youtube.com/embed/${yt_id}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
             }
             
             toggle_dark_mode();
