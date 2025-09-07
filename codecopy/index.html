@@ -1,1 +1,202 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CodeCopy - Encoder</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <!-- Highlight.js CSS theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <style>
+      body.dark_mode {
+        background-color: rgba(27, 30, 51, 0.94);
+        color: white;
+      }
+
+      h1.dark_mode {
+        color: #ffd500;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+      pre {
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 14px;
+      }
+
+      #inputText {
+        font-family: monospace;
+        font-size: 110%;
+      }
+      #copyMessage {
+        color: green;
+        font-weight: bold;
+        display: none;
+        margin-top: 10px;
+      }
+      #qrcode {
+        margin-top: 20px;
+      }
+      #qrNotice {
+        color: darkred;
+        font-style: italic;
+        display: none;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body onload="page_load();">
+    <div class="container" id="container" style="margin-top: 10px">
+      <p
+        id="dark_mode_label"
+        onclick="toggle_dark_mode();"
+        style="cursor: pointer; font-size: small; float: right"
+      >
+        Turn on dark mode
+      </p>
+      <p style="margin-bottom: -0.5em; padding-top: 2em">Mr Dimmick's</p>
+      <h1>CodeCopy</h1>
+      <p style="font-style: italic; font-size: 0.8em">
+        A simple tool for encoding code snippets as URLs to share with people
+        and devices
+      </p>
+      <p>
+        <br />
+      </p>
+
+      <h3>Enter code/text to encode:</h3>
+
+      <textarea id="inputText" rows="16" cols="80"></textarea><br /><br />
+      <button onclick="generateUrl()">Generate URL</button><br /><br />
+
+      <p><strong>Resulting URL:</strong></p>
+      <input
+        type="text"
+        id="resultUrl"
+        style="width: 100%"
+        readonly
+      /><br /><br />
+      <button id="copyBtn">Copy URL</button>
+      <button id="openBtn">Go to URL</button>
+      <p id="copyMessage">URL copied to clipboard!</p>
+
+      <div id="qrcode"></div>
+      <p id="qrNotice">
+        QR code not shown because the text is too long to scan reliably.
+      </p>
+    </div>
+
+    <!-- QRCode.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <!-- Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      let qr; // QR code instance
+      let dark_mode = false;
+
+      function page_load(){
+        toggle_dark_mode();
+      }
+
+      function generateUrl() {
+        const text = document.getElementById("inputText").value;
+
+        const encoded = encodeURIComponent(text);
+
+        const url =
+          "https://awdimmick.net/codecopy/getcode.html?enc=" + encoded;
+        document.getElementById("resultUrl").value = url;
+
+        // Show QR code only if URL is short enough
+        const qrContainer = document.getElementById("qrcode");
+        const qrNotice = document.getElementById("qrNotice");
+
+        qrContainer.innerHTML = "";
+        qrNotice.style.display = "none";
+
+        if (url.length <= 1000) {
+          qr = new QRCode(qrContainer, {
+            text: url,
+            width: 256,
+            height: 256,
+            correctLevel: QRCode.CorrectLevel.H,
+          });
+        } else {
+          qrNotice.style.display = "block";
+        }
+      }
+
+      // Apply syntax highlighting
+      const codeBlock = document.getElementById("inputText");
+      hljs.highlightElement(codeBlock);
+
+      // Copy button
+      const copyBtn = document.getElementById("copyBtn");
+      const copyMessage = document.getElementById("copyMessage");
+
+      copyBtn.addEventListener("click", async () => {
+        const urlField = document.getElementById("resultUrl");
+        if (!urlField.value) {
+          alert("Please generate a URL first!");
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(urlField.value);
+          copyMessage.style.display = "block";
+          setTimeout(() => {
+            copyMessage.style.display = "none";
+          }, 2000);
+        } catch (err) {
+          alert("Failed to copy text: " + err);
+        }
+      });
+
+      // Open button
+      document.getElementById("openBtn").addEventListener("click", () => {
+        const urlField = document.getElementById("resultUrl");
+        if (urlField.value) {
+          window.open(urlField.value, "_blank");
+        } else {
+          alert("Please generate a URL first!");
+        }
+      });
+
+      function toggle_dark_mode() {
+        dark_mode = !dark_mode;
+
+        if (dark_mode) {
+          document.getElementsByTagName("h1")[0].classList.add("dark_mode");
+          document.getElementsByTagName("body")[0].classList.add("dark_mode");
+          document.getElementById("dark_mode_label").innerText =
+            "Turn off dark mode";
+        } else {
+          document.getElementsByTagName("h1")[0].classList.remove("dark_mode");
+          document
+            .getElementsByTagName("body")[0]
+            .classList.remove("dark_mode");
+          document.getElementById("dark_mode_label").innerText =
+            "Turn on dark mode";
+        }
+      }
+    </script>
+  </body>
+</html>
