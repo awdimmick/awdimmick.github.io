@@ -1,0 +1,40 @@
+body.dark_mode {
+  background-color: rgba(27, 30, 51, 0.94);
+  color: white;
+}
+
+h1.dark_mode {
+  color: #ffd500;
+}
+
+body {
+  font-family: sans-serif;
+}
+pre {
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 14px;
+}
+
+#inputText {
+  font-family: monospace;
+  font-size: 110%;
+}
+#copyMessage {
+  color: green;
+  font-weight: bold;
+  display: none;
+  margin-top: 10px;
+}
+#qrcode {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+#qrNotice {
+  color: darkred;
+  font-style: italic;
+  display: none;
+  margin-top: 10px;
+}
+
