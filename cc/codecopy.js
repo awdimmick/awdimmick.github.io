@@ -7,7 +7,7 @@ function generateUrl() {
   
   const compressed_text = LZString.compressToEncodedURIComponent(encoded);
 
-  const url = "https://awdimmick.net/codecopy/getcode.html?enc=" + compressed_text;
+  const url = "https://awdimmick.net/cc/getcode.html?enc=" + compressed_text;
   document.getElementById("resultUrl").value = url;
 
   // Show QR code only if URL is short enough
