@@ -7,6 +7,7 @@ function generateUrl() {
   
   const compressed_text = LZString.compressToEncodedURIComponent(encoded);
 
+  // Update URL for new deployment
   const url = "https://awdimmick.net/cc/getcode.html?enc=" + compressed_text;
   document.getElementById("resultUrl").value = url;
 
